@@ -10,7 +10,10 @@ import { UsersModule } from './users/users.module';
     // GraphQLModule.forRoot({
     //   autoSchemaFile: 'schema.gql',
     // }),
-    MongooseModule.forRoot('mongodb://localhost/my-pets'),
+    MongooseModule.forRoot('mongodb://localhost/my-pets', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
     UsersModule,
   ],
   controllers: [AppController],

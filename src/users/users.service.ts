@@ -39,6 +39,9 @@ export class UsersService {
     id: string,
     user: UserRegister | UserInput,
   ): Promise<DocumentType<User>> {
-    return await this.userModel.findByIdAndUpdate(id, user);
+    return await this.userModel.findByIdAndUpdate(id, user, {
+      new: true,
+      runValidators: true,
+    });
   }
 }

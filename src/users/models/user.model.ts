@@ -13,8 +13,18 @@ import { UserRole } from './user-role.enum';
 @pre<User>('save', async function(next) {
   // TODO env
   this.password = await bcrypt.hash(this.password, 10);
+  next();
 })
-@modelOptions({ schemaOptions: { timestamps: true } })
+@pre<User>('findOneAndUpdate', async function(next) {
+  this.getUpdate().password = await bcrypt.hash(this.getUpdate().password, 10);
+  next();
+})
+@modelOptions({
+  schemaOptions: {
+    timestamps: true,
+    toJSON: { virtuals: true, getters: true },
+  },
+})
 export class User {
   @prop()
   name: string;
@@ -28,6 +38,12 @@ export class User {
 
   @arrayProp({ items: String, enum: UserRole, default: [UserRole.USER] })
   roles: UserRole[];
+
+  @prop()
+  createdAt: Date;
+
+  @prop()
+  updatedAt: Date;
 }
 
 export const UserModel = getModelForClass(User);

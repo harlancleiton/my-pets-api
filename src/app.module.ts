@@ -13,6 +13,8 @@ import { UsersModule } from './users/users.module';
     MongooseModule.forRoot('mongodb://localhost/my-pets', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
     }),
     UsersModule,
   ],

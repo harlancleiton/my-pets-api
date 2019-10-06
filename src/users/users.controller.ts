@@ -7,6 +7,8 @@ import {
   ClassSerializerInterceptor,
   Put,
   Param,
+  HttpCode,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiOkResponse, ApiCreatedResponse } from '@nestjs/swagger';
@@ -33,6 +35,7 @@ export class UsersController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   @UseInterceptors(ClassSerializerInterceptor)
   async update(@Param('id') id: string, @Body() user: UserRegister) {
     const json = (await this.userService.update(id, user)).toJSON();

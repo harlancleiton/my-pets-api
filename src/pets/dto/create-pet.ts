@@ -7,6 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 import { Gender } from '../../shared/models';
+import { PetTypeEnum } from '../models';
 
 export class CreatePet {
   @IsNotEmpty()
@@ -22,6 +23,10 @@ export class CreatePet {
   @IsNotEmpty()
   @IsEnum(Gender)
   gender: Gender;
+
+  @IsNotEmpty()
+  @IsEnum(PetTypeEnum)
+  type: PetTypeEnum;
 
   @IsNumber()
   @IsPositive()

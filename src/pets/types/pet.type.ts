@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, Int, Float } from 'type-graphql';
 import { Gender } from '../../shared/models';
+import { PetTypeEnum } from '../models';
 
 @ObjectType()
 export class PetType {
@@ -8,6 +9,9 @@ export class PetType {
 
   @Field()
   name: string;
+
+  @Field(() => PetTypeEnum)
+  type: PetTypeEnum;
 
   @Field({ nullable: true })
   breed?: string;

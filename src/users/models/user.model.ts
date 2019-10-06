@@ -39,10 +39,10 @@ export class User {
   @arrayProp({ items: String, enum: UserRole, default: [UserRole.USER] })
   roles: UserRole[];
 
-  @prop({ required: true })
+  @prop()
   createdAt: Date;
 
-  @prop({ required: true })
+  @prop()
   updatedAt: Date;
 
   @Exclude()

@@ -7,6 +7,7 @@ import {
 import { Schema } from 'mongoose';
 import { Gender } from '../../shared/models';
 import { User, UserModel } from '../../users/models';
+import { PetTypeEnum } from './pet-type.enum';
 
 @modelOptions({
   schemaOptions: {
@@ -30,16 +31,19 @@ export class Pet {
   @prop({ required: true, default: 'Lorem Ipsum' })
   breed: string;
 
-  @prop({ ref: User })
+  @prop({ ref: User, required: true })
   user: Ref<User>;
 
   @prop({ min: 0, required: true })
   weight: number;
 
-  @prop({ required: true })
+  @prop({ required: true, enum: PetTypeEnum })
+  type: PetTypeEnum;
+
+  @prop()
   createdAt: Date;
 
-  @prop({ required: true })
+  @prop()
   updatedAt: Date;
 }
 

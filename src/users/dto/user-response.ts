@@ -24,6 +24,14 @@ export class UserResponse {
   @Expose()
   roles: UserRole[];
 
+  @ApiModelProperty()
+  @Expose()
+  createdAt: Date;
+
+  @ApiModelProperty()
+  @Expose()
+  updatedAt: Date;
+
   @Exclude()
   get username() {
     return this.email;

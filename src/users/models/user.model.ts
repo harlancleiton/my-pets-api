@@ -26,23 +26,23 @@ import { UserRole } from './user-role.enum';
   },
 })
 export class User {
-  @prop()
+  @prop({ required: true })
   name: string;
 
-  @prop({ unique: true })
+  @prop({ unique: true, required: true })
   email: string;
 
-  @prop()
+  @prop({ required: true })
   @Exclude()
   password: string;
 
   @arrayProp({ items: String, enum: UserRole, default: [UserRole.USER] })
   roles: UserRole[];
 
-  @prop()
+  @prop({ required: true })
   createdAt: Date;
 
-  @prop()
+  @prop({ required: true })
   updatedAt: Date;
 
   @Exclude()

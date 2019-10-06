@@ -23,4 +23,9 @@ export class UserResponse {
   @ApiModelProperty({ isArray: true, enum: UserRole })
   @Expose()
   roles: UserRole[];
+
+  @Exclude()
+  get username() {
+    return this.email;
+  }
 }

@@ -44,6 +44,11 @@ export class User {
 
   @prop()
   updatedAt: Date;
+
+  @Exclude()
+  get username() {
+    return this.email;
+  }
 }
 
 export const UserModel = getModelForClass(User);

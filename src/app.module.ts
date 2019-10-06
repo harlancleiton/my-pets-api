@@ -7,9 +7,9 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    // GraphQLModule.forRoot({
-    //   autoSchemaFile: 'schema.gql',
-    // }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: 'schema.gql',
+    }),
     MongooseModule.forRoot('mongodb://localhost/my-pets', {
       useNewUrlParser: true,
       useUnifiedTopology: true,

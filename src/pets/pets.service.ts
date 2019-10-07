@@ -6,12 +6,19 @@ import { ObjectID } from 'bson';
 import { PetModel, Pet } from './models';
 import { CreatePet, PetResponse } from './dto';
 import { PetInput } from './inputs';
+import { ConfigService } from '../config';
 
 @Injectable()
 export class PetsService {
+  private readonly pageLimit: number;
+  private readonly pageSkip: number;
   constructor(
     @InjectModel(PetModel.modelName) private readonly petModel: ModelType<Pet>,
-  ) {}
+    private readonly config: ConfigService,
+  ) {
+    this.pageLimit = config.paginationLimit;
+    this.pageSkip = config.paginationSkip;
+  }
 
   async findById(
     id: string | ObjectID,
@@ -45,9 +52,16 @@ export class PetsService {
     return plainToClass(PetResponse, petUpdated.toJSON());
   }
 
-  async findAll(user: string | ObjectID): Promise<PetResponse[]> {
-    // TODO paginate
-    const pets = await this.petModel.find({ user }).exec();
+  async findAll(
+    user: string | ObjectID,
+    limit: number = this.pageLimit,
+    skip: number = this.pageSkip,
+  ): Promise<PetResponse[]> {
+    const pets = await this.petModel
+      .find({ user })
+      .limit(limit)
+      .skip(skip)
+      .exec();
     return plainToClass(PetResponse, pets);
   }
 

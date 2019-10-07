@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PetsModule } from './pets/pets.module';
+import { ConfigModule, ConfigService } from './config';
 
 @Module({
   imports: [
@@ -13,17 +14,29 @@ import { PetsModule } from './pets/pets.module';
       autoSchemaFile: 'schema.gql',
       context: ({ req }) => ({ req }),
     }),
-    MongooseModule.forRoot('mongodb://localhost/my-pets', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({
+        uri: config.databaseUrl,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
     AuthModule,
     PetsModule,
+    ConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  static port: number;
+
+  constructor(private readonly config: ConfigService) {
+    AppModule.port = config.port;
+  }
+}

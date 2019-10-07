@@ -4,12 +4,14 @@ import { PetsController } from './pets.controller';
 import { PetsResolver } from './pets.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PetModel } from './models';
+import { ConfigModule } from '../config';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: PetModel.modelName, schema: PetModel.schema },
     ]),
+    ConfigModule,
   ],
   providers: [PetsService, PetsResolver],
   controllers: [PetsController],

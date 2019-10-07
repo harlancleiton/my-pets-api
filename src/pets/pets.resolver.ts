@@ -1,12 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import { ID } from 'type-graphql';
 import { PetsService } from './pets.service';
 import { PetType } from './types';
 import { PetInput } from './inputs';
-import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/guards';
 import { GqlCurrentUser } from '../auth/decorators';
 import { UserType } from '../users/types';
-import { ID } from 'type-graphql';
 
 @Resolver('Pets')
 export class PetsResolver {

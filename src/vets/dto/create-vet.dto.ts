@@ -7,6 +7,7 @@ import {
   IsMongoId,
   ArrayNotEmpty,
   IsOptional,
+  IsIn,
 } from 'class-validator';
 import { PetTypeEnum } from '../../pets/models';
 
@@ -19,11 +20,10 @@ export class CreateVet {
   @Length(0, 256)
   bio: string;
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsEnum(PetTypeEnum)
+  @IsEnum(PetTypeEnum, { each: true })
   specialties: PetTypeEnum[];
 
+  @IsOptional()
   @IsBoolean()
   active: boolean;
 }

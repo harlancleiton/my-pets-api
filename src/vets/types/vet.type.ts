@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { PetTypeEnum } from '../../pets/models';
-import { UserResponse } from '../../users/dto';
+import { UserType } from '../../users/types';
 
 @ObjectType()
 export class VetType {
@@ -11,7 +11,7 @@ export class VetType {
   bio: string;
 
   @Field({ nullable: true })
-  user?: UserResponse;
+  user?: UserType;
 
   @Field(() => [PetTypeEnum])
   specialties: PetTypeEnum[];

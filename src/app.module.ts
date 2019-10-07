@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PetsModule } from './pets/pets.module';
 import { ConfigModule, ConfigService } from './config';
+import { VetsModule } from './vets/vets.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ConfigModule, ConfigService } from './config';
     AuthModule,
     PetsModule,
     ConfigModule,
+    VetsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

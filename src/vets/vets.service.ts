@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types';
@@ -12,6 +13,7 @@ import { plainToClass } from 'class-transformer';
 import { UsersService } from '../users/users.service';
 import { ConfigService } from '../config';
 import { PetTypeEnum } from 'src/pets/models';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class VetsService {
@@ -35,11 +37,15 @@ export class VetsService {
       .find()
       .limit(limit)
       .skip(skip)
+      .populate('user')
       .exec();
   }
 
   async findById(id: string): Promise<DocumentType<Vet>> {
-    return await this.vetModel.findById(id).exec();
+    return await this.vetModel
+      .findById(id)
+      .populate('user')
+      .exec();
   }
 
   async findBySpecialties(
@@ -57,7 +63,10 @@ export class VetsService {
     return await this.vetModel.findOne(filter).exec();
   }
 
-  async create(dto: CreateVet | VetInput, user?: string): Promise<VetResponse> {
+  async create(
+    dto: CreateVet | VetInput,
+    user?: string,
+  ): Promise<DocumentType<Vet>> {
     if (!dto && !user) {
       throw new BadRequestException('User required');
     }
@@ -67,14 +76,36 @@ export class VetsService {
     const vet = await (await this.vetModel.create(dto))
       .populate('user')
       .execPopulate();
-    return plainToClass(VetResponse, vet.toJSON());
+    return vet;
   }
 
   async update(
     id: string,
     dto: UpdateVet | UpdateVetInput,
+    user: string,
   ): Promise<DocumentType<Vet>> {
-    const vet = await this.vetModel.findByIdAndUpdate(id, dto).exec();
+    // const vet = await this.vetModel.findByIdAndUpdate(id, dto).exec();
+    const vet = await this.vetModel.findById(id).exec();
+    if (!vet) {
+      throw new NotFoundException('Vet not found');
+    }
+    // @ts-ignore
+    if (vet.user !== user) {
+      throw new ForbiddenException();
+    }
+    await vet.update(dto).exec();
     return vet;
+  }
+
+  async delete(id: string, user: string): Promise<void> {
+    const vet = await this.vetModel.findById(id).exec();
+    if (!vet) {
+      throw new NotFoundException('Vet not found');
+    }
+    // @ts-ignore
+    if (vet.user !== user) {
+      throw new ForbiddenException();
+    }
+    await this.vetModel.findByIdAndDelete(id);
   }
 }

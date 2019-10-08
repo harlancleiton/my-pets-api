@@ -6,6 +6,7 @@ const configProvider = {
   useValue: new ConfigService(`${process.env.NODE_ENV || 'development'}.env`),
 };
 
+@Global()
 @Module({
   providers: [configProvider],
   exports: [configProvider],

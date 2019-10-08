@@ -18,7 +18,7 @@ export class Vet {
   @prop({ trim: true, maxlength: 256 })
   bio: string;
 
-  @prop({ ref: User, required: true, unique: true })
+  @prop({ ref: User, required: true, unique: true, select: true })
   user: Ref<User>;
 
   @arrayProp({ items: String, enum: PetTypeEnum })

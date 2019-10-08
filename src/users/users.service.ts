@@ -13,7 +13,8 @@ export class UsersService {
   ) {}
 
   async findById(id: string): Promise<DocumentType<User>> {
-    return await this.userModel.findById(id);
+    const user = await this.userModel.findById(id);
+    return user;
   }
 
   async findByEmail(email: string): Promise<DocumentType<User>> {

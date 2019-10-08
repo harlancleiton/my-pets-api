@@ -15,6 +15,7 @@ import { CurrentUser } from '../auth/decorators';
 import { UserResponse } from '../users/dto';
 import { VetsService } from './vets.service';
 import { plainToClass } from 'class-transformer';
+import { PetTypeEnum } from '../pets/models';
 
 @Controller('vets')
 export class VetsController {
@@ -35,6 +36,15 @@ export class VetsController {
   async show(@Param('id') id: string): Promise<VetResponse> {
     const vet = await this.vetService.findById(id);
     return plainToClass(VetResponse, vet.toJSON());
+  }
+
+  @Get('specialty/:specialty')
+  @UseGuards(AuthGuard('jwt'))
+  async findBySpecialty(
+    @Param('specialty') specialty: PetTypeEnum,
+  ): Promise<VetResponse[]> {
+    const vets = await this.vetService.findBySpecialties([specialty]);
+    return plainToClass(VetResponse, vets);
   }
 
   @Get()

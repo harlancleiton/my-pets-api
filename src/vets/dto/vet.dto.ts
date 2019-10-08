@@ -1,7 +1,7 @@
 import { IsString, IsDate, IsArray, IsEnum } from 'class-validator';
 import { UserResponse } from '../../users/dto';
 import { PetTypeEnum } from '../../pets/models';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 
 @Exclude()
 export class VetResponse {
@@ -14,6 +14,7 @@ export class VetResponse {
   bio: string;
 
   @Expose()
+  @Type(() => UserResponse)
   user?: UserResponse;
 
   @IsArray()

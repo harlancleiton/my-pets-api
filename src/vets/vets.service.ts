@@ -12,8 +12,7 @@ import { VetInput, UpdateVetInput } from './inputs';
 import { plainToClass } from 'class-transformer';
 import { UsersService } from '../users/users.service';
 import { ConfigService } from '../config';
-import { PetTypeEnum } from 'src/pets/models';
-import { Types } from 'mongoose';
+import { PetTypeEnum } from '../pets/models';
 
 @Injectable()
 export class VetsService {
@@ -54,13 +53,17 @@ export class VetsService {
     skip: number = this.skip,
   ): Promise<DocumentType<Vet>[]> {
     return await this.vetModel
-      .find({ specialties })
+      .find({ specialties: { $in: specialties } })
+      .populate('user')
       .limit(limit)
       .skip(skip);
   }
 
   async findOne(filter = {}): Promise<DocumentType<Vet>> {
-    return await this.vetModel.findOne(filter).exec();
+    return await this.vetModel
+      .findOne(filter)
+      .populate('user')
+      .exec();
   }
 
   async create(
